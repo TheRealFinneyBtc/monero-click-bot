@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monero Click Ads</title>
+  <meta name="description" content="Monero Click Bot sponsor sayfası - kripto odaklı, gerçek kullanıcı trafiği." />
+
+  <style>
+    :root {
+      --bg: #050608;
+      --bg-alt: #0d0f14;
+      --card-bg: #13151c;
+      --accent: #ff7a2f; /* Monero turuncusu */
+      --accent-soft: rgba(255, 122, 47, 0.18);
+      --text-main: #f5f5f5;
+      --text-muted: #a2a6b5;
+      --border-soft: rgba(255,255,255,0.06);
+      --success: #38c172;
+      --danger: #e3342f;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", Roboto, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #1b1d26 0, #050608 55%);
+      min-height: 100vh;
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      padding: 24px 12px 32px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 1200px;
+      background: linear-gradient(145deg, rgba(255,122,47,0.04), rgba(0,0,0,0.8));
+      border-radius: 22px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 24px 80px rgba(0,0,0,0.7);
+      padding: 20px 18px 24px;
+      backdrop-filter: blur(18px);
+    }
+
+    @media (min-width: 768px) {
+      .page {
+        padding: 26px 28px 30px;
+      }
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 22px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 30% 20%, #ffc78f 0, #ff7a2f 35%, #ff4500 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1b1b1b;
+      font-weight: 800;
+      font-size: 20px;
+      box-shadow: 0 0 28px rgba(255,122,47,0.7);
+    }
+
+    .brand-text-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .lang-switch {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .lang-btn {
+      border: 1px solid var(--border-soft);
+      background: rgba(10,12,18,0.85);
+      color: var(--text-muted);
+      font-size: 11px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease-out;
+    }
+
+    .lang-btn.active {
+      background: var(--accent-soft);
+      border-color: var(--accent);
+      color: var(--text-main);
+    }
+
+    .lang-btn:hover {
+      border-color: var(--accent);
+      color: var(--text-main);
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .top-row {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    @media (min-width: 900px) {
+      .top-row {
+        flex-direction: row;
+        align-items: flex-start;
+      }
+    }
+
+    .hero {
+      flex: 2;
+      background: radial-gradient(circle at top left, rgba(255,122,47,0.2) 0, rgba(8,9,14,0.9) 55%);
+      border-radius: 20px;
+      padding: 18px 18px 20px;
+      border: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at bottom right, rgba(255,122,47,0.16), transparent 55%);
+      opacity: 0.85;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      font-size: 11px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid rgba(255,255,255,0.15);
+      margin-bottom: 10px;
+      color: var(--text-muted);
+    }
+
+    .hero-badge span.highlight {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .hero-title {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      max-width: 520px;
+    }
+
+    .hero-metrics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .metric-pill {
+      flex: 1;
+      min-width: 140px;
+      background: rgba(8,9,14,0.85);
+      border-radius: 14px;
+      padding: 10px 11px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .metric-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .metric-value {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .metric-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      margin-top: 4px;
+      color: var(--text-muted);
+    }
+
+    .metric-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--success);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .btn-primary {
+      border: none;
+      outline: none;
+      border-radius: 999px;
+      padding: 9px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #181515;
+      background: linear-gradient(135deg, #ffb26a, #ff7a2f);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 10px 28px rgba(255,122,47,0.5);
+      text-decoration: none;
+    }
+
+    .btn-primary span.icon {
+      font-size: 16px;
+    }
+
+    .btn-ghost {
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(8,9,14,0.85);
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-ghost span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+
+    .side-box {
+      flex: 1.2;
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 14px 14px 16px;
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .side-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .side-text {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .contact-block {
+      margin-top: 6px;
+      padding: 9px 10px;
+      border-radius: 14px;
+      background: rgba(0,0,0,0.5);
+      border: 1px dashed rgba(255,255,255,0.12);
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .contact-block code {
+      font-size: 11px;
+      background: rgba(0,0,0,0.6);
+      padding: 2px 6px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .contact-link span.icon {
+      font-size: 14px;
+    }
+
+    .section {
+      margin-top: 6px;
+      border-radius: 18px;
+      background: var(--bg-alt);
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 14px 14px 16px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      gap: 10px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .section-badge {
+      font-size: 11px;
+      color: var(--accent);
+      border-radius: 999px;
+      border: 1px solid rgba(255,122,47,0.5);
+      padding: 4px 9px;
+      background: rgba(255,122,47,0.05);
+    }
+
+    .sponsor-grid {
+      display: grid;
+      grid-template-columns: minmax(0,1fr);
+      gap: 12px;
+    }
+
+    @media (min-width: 700px) {
+      .sponsor-grid {
+        grid-template-columns: repeat(3, minmax(0,1fr));
+      }
+    }
+
+    .sponsor-card {
+      background: rgba(9,11,16,0.9);
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 11px 11px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sponsor-tag {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text-muted);
+    }
+
+    .sponsor-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .sponsor-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .sponsor-cta {
+      margin-top: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11px;
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .sponsor-cta span.icon {
+      font-size: 14px;
+    }
+
+    footer {
+      margin-top: 10px;
+      padding-top: 12px;
+      border-top: 1px dashed rgba(255,255,255,0.08);
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .footer-right a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    .footer-right a:hover {
+      color: var(--accent);
+    }
+
+    .pill-small {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .pill-small span.dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--success);
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="logo">XMR</div>
+        <div class="brand-text">
+          <div class="brand-text-title" data-i18n="brandTitle">
+            Monero Click Ads
+          </div>
+          <div class="brand-text-sub" data-i18n="brandSub">
+            Kripto odaklı, Telegram tabanlı gerçek trafik.
+          </div>
+        </div>
+      </div>
+      <div class="lang-switch">
+        <button class="lang-btn active" data-lang="tr">🇹🇷 TR</button>
+        <button class="lang-btn" data-lang="en">🇬🇧 EN</button>
+        <button class="lang-btn" data-lang="ru">🇷🇺 RU</button>
+        <button class="lang-btn" data-lang="de">🇩🇪 DE</button>
+      </div>
+    </header>
+
+    <main>
+      <div class="top-row">
+        <!-- HERO / ANA SPONSOR BLOĞU -->
+        <section class="hero">
+          <div class="hero-inner">
+            <div class="hero-badge">
+              <span class="highlight" data-i18n="badgeMain">MAIN SPONSOR SLOT</span>
+              · <span data-i18n="badgeSub">Sınırlı alan · Kripto kitle</span>
+            </div>
+
+            <h1 class="hero-title" data-i18n="heroTitle">
+              Trafiğini Monero Click Bot ile büyüt.
+            </h1>
+
+            <p class="hero-subtitle" data-i18n="heroSubtitle">
+              Reklamlarını, ödül karşılığı site ziyaret eden gerçek Telegram kullanıcılarına göster.
+              Kripto odaklı, yüksek etkileşimli niş bir kitleye direkt eriş.
+            </p>
+
+            <div class="hero-metrics">
+              <div class="metric-pill">
+                <div class="metric-label" data-i18n="metric1Label">
+                  Günlük aktif kullanıcı
+                </div>
+                <div class="metric-value" data-i18n="metric1Value">
+                  1.2K+
+                </div>
+                <div class="metric-tag">
+                  <span class="metric-dot"></span>
+                  <span data-i18n="metric1Tag">Organik Telegram trafiği</span>
+                </div>
+              </div>
+              <div class="metric-pill">
+                <div class="metric-label" data-i18n="metric2Label">
+                  Reklam başı ortalama tık
+                </div>
+                <div class="metric-value" data-i18n="metric2Value">
+                  300–600
+                </div>
+                <div class="metric-tag">
+                  <span class="metric-dot"></span>
+                  <span data-i18n="metric2Tag">Ödül odaklı ziyaret</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="hero-actions">
+              <!-- Bu butonun LINK'İNİ değiştir: sponsor veya iletişim -->
+              <a href="https://t.me/USERNAMEIN" target="_blank" class="btn-primary">
+                <span class="icon">⚡</span>
+                <span data-i18n="btnSponsorNow">Sponsor olmak için yaz</span>
+              </a>
+
+              <a href="#why" class="btn-ghost">
+                <span class="dot"></span>
+                <span data-i18n="btnWhy">Neden buraya reklam vermeliyim?</span>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- SAĞ TARAFTA: SPONSOR BİLGİ + İLETİŞİM -->
+        <aside class="side-box">
+          <div>
+            <div class="side-title" data-i18n="sideTitle">
+              Monero Click Bot hakkında
+            </div>
+            <p class="side-text" data-i18n="sideText">
+              Kullanıcılar Telegram bot içinde reklam görevine tıklıyor, sitenize geliyor ve karşılığında küçük bir Monero (XMR) ödülü kazanıyor. Yani, buraya gelen herkes “reklam görme” niyetiyle burada.
+            </p>
+          </div>
+
+          <div class="contact-block">
+            <div data-i18n="contactLine1">
+              📬 Sponsorluk, banner veya özel kampanya için:
+            </div>
+            <div style="margin-top:4px;" data-i18n="contactLine2">
+              Telegram üzerinden ulaş:
+            </div>
+            <!-- BURAYI KENDİ TELEGRAM @KULLANICI ADINLA DEĞİŞTİR -->
+            <code>@USERNAMEIN</code>
+
+            <a href="https://t.me/USERNAMEIN" target="_blank" class="contact-link">
+              <span class="icon">➡️</span>
+              <span data-i18n="contactCta">DM at, paketi konuşalım.</span>
+            </a>
+          </div>
+
+          <div class="pill-small" style="margin-top:6px;">
+            <span class="dot"></span>
+            <span data-i18n="pillNote">
+              Not: Bu trafik ödül karşılığıdır (incentivized). Google AdSense için uygun değildir, direkt sponsor/affiliate için idealdir.
+            </span>
+          </div>
+        </aside>
+      </div>
+
+      <!-- ALT BÖLÜM: DİĞER SPONSORLAR + NEDEN BİZ -->
+      <section class="section" id="why">
+        <div class="section-header">
+          <div class="section-title" data-i18n="sectionSponsorsTitle">
+            Aktif sponsor alanları
+          </div>
+          <div class="section-badge" data-i18n="sectionSponsorsBadge">
+            Sınırlı slot · İlk gelen alır
+          </div>
+        </div>
+
+        <div class="sponsor-grid">
+          <!-- Sponsor kartı #1 -->
+          <article class="sponsor-card">
+            <div class="sponsor-tag" data-i18n="sponsorTagFeatured">
+              FEATURED
+            </div>
+            <h3 class="sponsor-name">
+              <!-- BURAYI SPONSOR İSMİYLE DEĞİŞTİR -->
+              Your Brand Here
+            </h3>
+            <p class="sponsor-desc" data-i18n="sponsor1Desc">
+              Ana sayfa üstünde büyük yer. Bütün bot trafiği önce seni görüyor: borsa, cüzdan, oyun, casino veya kripto projesi için ideal.
+            </p>
+            <!-- BURAYI SPONSOR LİNKİYLE DEĞİŞTİR -->
+            <a href="https://example.com" target="_blank" class="sponsor-cta">
+              <span class="icon">↗</span>
+              <span data-i18n="sponsorVisit">Siteyi aç</span>
+            </a>
+          </article>
+
+          <!-- Sponsor kartı #2 -->
+          <article class="sponsor-card">
+            <div class="sponsor-tag" data-i18n="sponsorTagSecondary">
+              SLOT
+            </div>
+            <h3 class="sponsor-name">
+              Secondary Sponsor A
+            </h3>
+            <p class="sponsor-desc" data-i18n="sponsor2Desc">
+              Küçük ama sürekli görünen banner alanı. Discord/Telegram grupları, sinyal kanalları veya eğitim projeleri için uygun.
+            </p>
+            <a href="https://example.com" target="_blank" class="sponsor-cta">
+              <span class="icon">↗</span>
+              <span data-i18n="sponsorVisit">Siteyi aç</span>
+            </a>
+          </article>
+
+          <!-- Sponsor kartı #3 -->
+          <article class="sponsor-card">
+            <div class="sponsor-tag" data-i18n="sponsorTagSecondary">
+              SLOT
+            </div>
+            <h3 class="sponsor-name">
+              Secondary Sponsor B
+            </h3>
+            <p class="sponsor-desc" data-i18n="sponsor3Desc">
+              Privacy, VPN, proxy, anti-dox ürünleri gibi gizlilik odaklı markalar için niş ama tam hedefli trafik.
+            </p>
+            <a href="https://example.com" target="_blank" class="sponsor-cta">
+              <span class="icon">↗</span>
+              <span data-i18n="sponsorVisit">Siteyi aç</span>
+            </a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div class="section-title" data-i18n="whyTitle">
+            Neden Monero Click Bot trafiği?
+          </div>
+        </div>
+        <p class="side-text" data-i18n="whyText1">
+          • Kitle zaten kripto dünyasında, Telegram kullanıcısı ve ödül odaklı.  
+          • Reklamlar bot içinde görev gibi çalışıyor; kullanıcı “siteye gitmezsem ödül alamam” psikolojisiyle geliyor.  
+          • Full kontrol sende: tek sponsor veya az sayıda seçili marka ile çalışırsın, AdSense gibi platformlara bağlı kalmazsın.
+        </p>
+        <p class="side-text" style="margin-top:6px;" data-i18n="whyText2">
+          Paketleri tıklama, gösterim veya sabit süre üzerinden kurgulayabiliriz. İster günlük, ister haftalık/aylık anlaşma yapalım.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-left">
+        <span data-i18n="footerLeft">
+          ⚡ Trafik kaynağı: Monero Click Bot (Telegram)
+        </span>
+      </div>
+      <div class="footer-right">
+        <span data-i18n="footerRightLead">İletişim:</span>
+        <!-- YİNE KENDİ TELEGRAMINI KOY -->
+        <a href="https://t.me/USERNAMEIN" target="_blank">@USERNAMEIN</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const translations = {
+      tr: {
+        brandTitle: "Monero Click Ads",
+        brandSub: "Kripto odaklı, Telegram tabanlı gerçek trafik.",
+        badgeMain: "ANA SPONSOR ALANI",
+        badgeSub: "Sınırlı alan · Kripto kitle",
+        heroTitle: "Trafiğini Monero Click Bot ile büyüt.",
+        heroSubtitle:
+          "Reklamlarını, ödül karşılığı site ziyaret eden gerçek Telegram kullanıcılarına göster. Kripto odaklı, yüksek etkileşimli niş bir kitleye direkt eriş.",
+        metric1Label: "Günlük aktif kullanıcı",
+        metric1Value: "1.2K+",
+        metric1Tag: "Organik Telegram trafiği",
+        metric2Label: "Reklam başı ortalama tık",
+        metric2Value: "300–600",
+        metric2Tag: "Ödül odaklı ziyaret",
+        btnSponsorNow: "Sponsor olmak için yaz",
+        btnWhy: "Neden buraya reklam vermeliyim?",
+        sideTitle: "Monero Click Bot hakkında",
+        sideText:
+          "Kullanıcılar Telegram bot içinde reklam görevine tıklıyor, sitenize geliyor ve karşılığında küçük bir Monero (XMR) ödülü kazanıyor. Yani, buraya gelen herkes “reklam görme” niyetiyle burada.",
+        contactLine1: "📬 Sponsorluk, banner veya özel kampanya için:",
+        contactLine2: "Telegram üzerinden ulaş:",
+        contactCta: "DM at, paketi konuşalım.",
+        pillNote:
+          "Not: Bu trafik ödül karşılığıdır (incentivized). Google AdSense için uygun değildir, direkt sponsor/affiliate için idealdir.",
+        sectionSponsorsTitle: "Aktif sponsor alanları",
+        sectionSponsorsBadge: "Sınırlı slot · İlk gelen alır",
+        sponsorTagFeatured: "ÖNE ÇIKAN",
+        sponsorTagSecondary: "SLOT",
+        sponsor1Desc:
+          "Ana sayfa üstünde büyük yer. Bütün bot trafiği önce seni görüyor: borsa, cüzdan, oyun, casino veya kripto projesi için ideal.",
+        sponsor2Desc:
+          "Küçük ama sürekli görünen banner alanı. Discord/Telegram grupları, sinyal kanalları veya eğitim projeleri için uygun.",
+        sponsor3Desc:
+          "Privacy, VPN, proxy, anti-dox ürünleri gibi gizlilik odaklı markalar için niş ama tam hedefli trafik.",
+        sponsorVisit: "Siteyi aç",
+        whyTitle: "Neden Monero Click Bot trafiği?",
+        whyText1:
+          "• Kitle zaten kripto dünyasında, Telegram kullanıcısı ve ödül odaklı.\n• Reklamlar bot içinde görev gibi çalışıyor; kullanıcı “siteye gitmezsem ödül alamam” psikolojisiyle geliyor.\n• Full kontrol sende: tek sponsor veya az sayıda seçili marka ile çalışırsın, AdSense gibi platformlara bağlı kalmazsın.",
+        whyText2:
+          "Paketleri tıklama, gösterim veya sabit süre üzerinden kurgulayabiliriz. İster günlük, ister haftalık/aylık anlaşma yapalım.",
+        footerLeft: "⚡ Trafik kaynağı: Monero Click Bot (Telegram)",
+        footerRightLead: "İletişim:",
+      },
+      en: {
+        brandTitle: "Monero Click Ads",
+        brandSub: "Crypto-focused, Telegram-based real traffic.",
+        badgeMain: "MAIN SPONSOR SLOT",
+        badgeSub: "Limited slots · Crypto audience",
+        heroTitle: "Grow your traffic with Monero Click Bot.",
+        heroSubtitle:
+          "Show your ads to real Telegram users who visit sites in exchange for small XMR rewards. A highly engaged, crypto-native audience.",
+        metric1Label: "Daily active users",
+        metric1Value: "1.2K+",
+        metric1Tag: "Organic Telegram traffic",
+        metric2Label: "Avg clicks per campaign",
+        metric2Value: "300–600",
+        metric2Tag: "Incentivized visits",
+        btnSponsorNow: "Message to become a sponsor",
+        btnWhy: "Why advertise here?",
+        sideTitle: "About Monero Click Bot",
+        sideText:
+          "Users tap an ad task inside the Telegram bot, land on your website and receive a small Monero (XMR) reward. Everyone coming here expects to see an offer.",
+        contactLine1: "📬 For sponsorships, banners or custom campaigns:",
+        contactLine2: "Contact via Telegram:",
+        contactCta: "DM me, let’s talk packages.",
+        pillNote:
+          "Note: This is incentivized traffic. Not suitable for Google AdSense. Perfect for direct sponsors / affiliate offers.",
+        sectionSponsorsTitle: "Active sponsor slots",
+        sectionSponsorsBadge: "Limited slots · First come, first served",
+        sponsorTagFeatured: "FEATURED",
+        sponsorTagSecondary: "SLOT",
+        sponsor1Desc:
+          "Headline slot at the very top. All bot traffic sees you first: ideal for exchanges, wallets, games, casinos or crypto projects.",
+        sponsor2Desc:
+          "Smaller but persistent banner card. Great for Discord/Telegram groups, signal channels or educational projects.",
+        sponsor3Desc:
+          "Perfect for privacy-focused tools like VPN, proxy, anti-dox products. Niche but highly targeted audience.",
+        sponsorVisit: "Visit site",
+        whyTitle: "Why Monero Click Bot traffic?",
+        whyText1:
+          "• The audience is already into crypto, lives on Telegram and is reward-driven.\n• Ads behave like missions inside the bot; users know they must open the site to receive rewards.\n• You keep full control: work with a few handpicked brands instead of being at the mercy of Ad networks.",
+        whyText2:
+          "We can structure packages around clicks, impressions or time slots. Daily, weekly or monthly deals are all possible.",
+        footerLeft: "⚡ Traffic source: Monero Click Bot (Telegram)",
+        footerRightLead: "Contact:",
+      },
+      ru: {
+        brandTitle: "Monero Click Ads",
+        brandSub: "Крипто-аудитория, трафик из Telegram.",
+        badgeMain: "ГЛАВНЫЙ СПОНСОРСКИЙ СЛОТ",
+        badgeSub: "Ограниченное количество · Крипто-клиенты",
+        heroTitle: "Увеличь трафик через Monero Click Bot.",
+        heroSubtitle:
+          "Показывай рекламу реальным пользователям Telegram, которые переходят на сайты за небольшое вознаграждение в XMR. Нишевый, но максимально целевой трафик.",
+        metric1Label: "Ежедневно активных пользователей",
+        metric1Value: "1.2K+",
+        metric1Tag: "Органический Telegram-трафик",
+        metric2Label: "Средний кликов на кампанию",
+        metric2Value: "300–600",
+        metric2Tag: "Мотивированный трафик",
+        btnSponsorNow: "Написать по спонсорству",
+        btnWhy: "Почему рекламироваться здесь?",
+        sideTitle: "О Monero Click Bot",
+        sideText:
+          "Пользователь нажимает задание в боте, переходит на ваш сайт и получает небольшое вознаграждение в Monero (XMR). То есть сюда приходят люди, которые готовы смотреть офферы.",
+        contactLine1: "📬 Спонсорство, баннеры или спец-кампании:",
+        contactLine2: "Пиши в Telegram:",
+        contactCta: "Напиши в личку, обсудим пакеты.",
+        pillNote:
+          "Важно: это мотивированный трафик. Не подходит для Google AdSense. Зато отлично подходит для прямых рекламодателей и CPA-офферов.",
+        sectionSponsorsTitle: "Активные спонсорские слоты",
+        sectionSponsorsBadge: "Ограничено · Кто успел, тот и взял",
+        sponsorTagFeatured: "TOP",
+        sponsorTagSecondary: "SLOT",
+        sponsor1Desc:
+          "Самый большой блок наверху. Весь трафик из бота сначала видит именно тебя: биржи, кошельки, игры, казино, крипто-проекты.",
+        sponsor2Desc:
+          "Небольшой, но постоянно видимый баннер. Подходит для Telegram/Discord-групп, сигнал-каналов и обучающих проектов.",
+        sponsor3Desc:
+          "Идеально для сервисов приватности: VPN, прокси, анти-докс решения. Аудитория небольшая, но очень целевая.",
+        sponsorVisit: "Перейти на сайт",
+        whyTitle: "Почему трафик Monero Click Bot?",
+        whyText1:
+          "• Аудитория уже в крипте, живёт в Telegram и любит вознаграждения.\n• Реклама выглядит как задания в боте: чтобы получить XMR, нужно реально открыть сайт.\n• Ты полностью контролируешь бренды и офферы — без завязки на рекламные сети.",
+        whyText2:
+          "Пакеты можно строить вокруг кликов, показов или сроков. Ежедневные, недельные или месячные размещения.",
+        footerLeft: "⚡ Источник трафика: Monero Click Bot (Telegram)",
+        footerRightLead: "Контакт:",
+      },
+      de: {
+        brandTitle: "Monero Click Ads",
+        brandSub: "Krypto-Fokus, echter Telegram-Traffic.",
+        badgeMain: "HAUPT-SPONSOR-SLOT",
+        badgeSub: "Begrenzte Slots · Krypto-Zielgruppe",
+        heroTitle: "Wachse mit dem Monero Click Bot.",
+        heroSubtitle:
+          "Zeige deine Werbeangebote echten Telegram-Nutzern, die Webseiten gegen kleine XMR-Rewards besuchen. Eine hoch engagierte, krypto-native Zielgruppe.",
+        metric1Label: "Tägliche aktive Nutzer",
+        metric1Value: "1.2K+",
+        metric1Tag: "Organischer Telegram-Traffic",
+        metric2Label: "Ø Klicks pro Kampagne",
+        metric2Value: "300–600",
+        metric2Tag: "Incentivierte Besuche",
+        btnSponsorNow: "Schreibe für Sponsoring",
+        btnWhy: "Warum hier werben?",
+        sideTitle: "Über den Monero Click Bot",
+        sideText:
+          "User starten eine Werbe-Aufgabe im Telegram-Bot, landen auf deiner Seite und erhalten eine kleine Belohnung in Monero (XMR). Jeder Besucher rechnet damit, ein Angebot zu sehen.",
+        contactLine1: "📬 Für Sponsoring, Banner oder Kampagnen:",
+        contactLine2: "Kontakt über Telegram:",
+        contactCta: "Schreib mir, wir besprechen die Pakete.",
+        pillNote:
+          "Hinweis: Das ist incentivierter Traffic. Nicht für Google AdSense geeignet, aber perfekt für direkte Sponsoren und Affiliate-Deals.",
+        sectionSponsorsTitle: "Aktive Sponsor-Slots",
+        sectionSponsorsBadge: "Begrenzte Slots · First come, first served",
+        sponsorTagFeatured: "FEATURED",
+        sponsorTagSecondary: "SLOT",
+        sponsor1Desc:
+          "Großer Headline-Slot ganz oben. Der gesamte Bot-Traffic sieht zuerst dich: ideal für Börsen, Wallets, Games, Casinos oder Krypto-Projekte.",
+        sponsor2Desc:
+          "Kleiner, aber dauerhaft sichtbarer Banner. Gut für Telegram/Discord-Gruppen, Signal-Channels oder Education-Projekte.",
+        sponsor3Desc:
+          "Ideal für Privacy-Tools wie VPN, Proxy, Anti-Dox Produkte. Kleinere, aber sehr gezielte Zielgruppe.",
+        sponsorVisit: "Seite öffnen",
+        whyTitle: "Warum Monero Click Bot Traffic?",
+        whyText1:
+          "• Die Zielgruppe ist bereits in Krypto, lebt auf Telegram und ist reward-getrieben.\n• Werbung wird als Mission im Bot dargestellt – um XMR zu bekommen, müssen User die Seite wirklich öffnen.\n• Du behältst die volle Kontrolle: wenige, ausgewählte Marken statt Abhängigkeit von Ad-Netzwerken.",
+        whyText2:
+          "Pakete können nach Klicks, Impressions oder Zeiträumen gestaltet werden. Tägliche, wöchentliche oder monatliche Deals sind möglich.",
+        footerLeft: "⚡ Traffic-Quelle: Monero Click Bot (Telegram)",
+        footerRightLead: "Kontakt:",
+      },
+    };
+
+    function applyLanguage(lang) {
+      const dict = translations[lang] || translations["tr"];
+      document.documentElement.lang = lang;
+
+      document.querySelectorAll("[data-i18n]").forEach((el) => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) {
+          // \n'leri <br> yap
+          if (dict[key].includes("\n")) {
+            el.innerHTML = dict[key].replace(/\n/g, "<br/>");
+          } else {
+            el.textContent = dict[key];
+          }
+        }
+      });
+
+      document.querySelectorAll(".lang-btn").forEach((btn) => {
+        if (btn.getAttribute("data-lang") === lang) {
+          btn.classList.add("active");
+        } else {
+          btn.classList.remove("active");
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      applyLanguage("tr");
+
+      document.querySelectorAll(".lang-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const lang = btn.getAttribute("data-lang");
+          applyLanguage(lang);
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,1 @@
+# monero-click-bot
